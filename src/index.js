@@ -108,6 +108,15 @@ async function main() {
     (order) => order.status === "Delayed"
   ).length;
   const erroredCount = processedOrders.filter((order) => order.weather_error).length;
+  console.table(
+  processedOrders.map(order => ({
+    order_id: order.order_id,
+    customer: order.customer,
+    city: order.city,
+    status: order.status || "Pending",
+    error: order.weather_error || ""
+  }))
+);
 
   console.log(`Processed ${processedOrders.length} orders.`);
   console.log(`Delayed orders: ${delayedCount}`);
