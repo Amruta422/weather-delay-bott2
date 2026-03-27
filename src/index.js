@@ -76,17 +76,13 @@ async function processOrder(order) {
   try {
     return await fetchWeatherForOrder(order);
   } catch (error) {
-    console.error(
-      `[Weather Fetch Failed] order_id=${order.order_id} city="${order.city}" message="${error.message}"`
-    );
-
     return {
       ...order,
+      status: "Error",
       weather_error: error.message
     };
   }
 }
-
 async function saveProcessedOrders(orders) {
   const content = JSON.stringify(orders, null, 2);
   await fs.writeFile(OUTPUT_FILE, content);
@@ -114,7 +110,7 @@ async function main() {
     customer: order.customer,
     city: order.city,
     status: order.status || "Pending",
-    error: order.weather_error || ""
+    
   }))
 );
 
